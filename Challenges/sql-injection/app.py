@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy.sql import func
@@ -26,7 +26,9 @@ with app.app_context():
     db.drop_all()
     db.create_all()
     new_user = User(email='test@test.com', firstname='Foo',lastname='Bar',bio='A test user')
+    new_user2 = User(email='foo@test.com', firstname='Emil',lastname='Lindblad',bio='Lmao')
     db.session.add(new_user)
+    db.session.add(new_user2)
     db.session.commit()
     print("testing")
 
@@ -36,7 +38,8 @@ with app.app_context():
 def hello_world():
     users = User.query.all()
     print(users[0].email)
-    return f"<p>Hello, World! {users[0].email}</p>"
+    return render_template('index.html',users=users)
+
 
 @app.route('/data')
 def render_path():
