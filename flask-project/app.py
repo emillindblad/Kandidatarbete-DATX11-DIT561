@@ -6,14 +6,13 @@ from sqlalchemy.sql import func
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-db = SQLAlchemy()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(basedir, '/db/db.db')
+    'sqlite:///database.db'
+    # 'sqlite:///' + os.path.join(basedir, '/db/db.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db.init_app(app)
+db = SQLAlchemy(app)
 
 
 print(app.config)
@@ -29,16 +28,19 @@ class User(db.Model):
     def __repr__(self) -> str:
         return f'<User {self.firstname}>'
 
-
-with app.app_context():
+if __name__ == '__main__':
     db.create_all()
+    app.run(debug=True)
+
 
 @app.route("/")
 def hello_world():
+    new_user = User(email='test@test.com')
+    db.session.add(new_user)
+    db.session.commit()
     return "<p>Hello, World!</p>"
 
 @app.route('/data')
 def render_path():
     foo = str(request.query_string)
     return foo
-
