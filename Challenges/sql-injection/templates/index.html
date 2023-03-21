@@ -3,15 +3,74 @@
     <head>
         <meta charset="UTF-8">
         <title>FlaskApp</title>
+        <style>
+        body {
+            margin: 0
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+        .wrapper {
+            width: 60vw;
+        }
+        div.data-container {
+            padding: 1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        div.data {
+            display: flex;
+        }
+        div.searchbox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        table,th,td {
+            border: 1px solid black;
+            padding: 0.5em;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        </style>
     </head>
     <body>
-        <div>
-            {% for user in users%}
-                <p>{{user.email}}</p>
-                <p>{{user.firstname}}</p>
-                <p>{{user.lastname}}</p>
-                <p>{{user.bio}}</p>
-            {% endfor %}
-        </div>
+        <main>
+            <div class="wrapper">
+                <div class="searchbox">
+                    <h1>Product search</h1>
+                    <form method="post">
+                        <input type="text" name="search">
+                        <input type="submit" value="Search">
+                    </form>
+                </div>
+                <div class="data-container">
+                    <h1>Results</h1>
+                    {% if data %}
+                    <table>
+                        <tr>
+                            <th>Fruit</th>
+                            <th>Price</th>
+                            <th>Current stock</th>
+                        </tr>
+                        {% for i in data %}
+                            <tr>
+                            <td>{{i.name}}</td>
+                            <td>{{i.price}}</td>
+                            <td>{{i.stock}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <p>Results will appear here:</p>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
     </body>
 </html>

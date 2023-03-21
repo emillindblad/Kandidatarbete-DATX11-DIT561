@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from random import randint
 
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, text
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] =\
@@ -22,27 +23,43 @@ class User(db.Model):
     def __repr__(self) -> str:
         return f'<User {self.firstname}>'
 
+class Fruit(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    stock = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self) -> str:
+        return f'<Product {self.name}>'
+
 with app.app_context():
     db.drop_all()
     db.create_all()
+    session = db.session()
     new_user = User(email='test@test.com', firstname='Foo',lastname='Bar',bio='A test user')
     new_user2 = User(email='foo@test.com', firstname='Emil',lastname='Lindblad',bio='Lmao')
-    db.session.add(new_user)
-    db.session.add(new_user2)
-    db.session.commit()
-    print("testing")
+    session.add(new_user)
+    session.add(new_user2)
 
+    fruit_names = ['Apple', 'Banana', 'Orange', 'Grapefruit', 'Pineapple', 'Mango', 'Watermelon', 'Kiwi', 'Cherry', 'Peach', 'Pear', 'Plum']
+    fruits = []
+    for i in fruit_names:
+        name = i
+        price = round(randint(1, 100) + randint(0, 99) / 100, 2)
+        stock = randint(1, 100)
+        fruit = Fruit(name=name, price=price, stock=stock)
+        fruits.append(fruit)
 
+    session.bulk_save_objects(fruits)
+    session.commit()
 
-@app.route("/")
-def hello_world():
-    users = User.query.all()
-    print(users[0].email)
-    return render_template('index.html',users=users)
+@app.route("/", methods=('GET','POST'))
+def index():
+    if request.method == 'POST':
+        input = request.form['search']
+        print(input)
+        query = f"SELECT * FROM Fruit WHERE name LIKE '%{input}%'"
+        results = session.execute(text(query))
+        return render_template('index.html', data=results)
 
-
-@app.route('/data')
-def render_path():
-    foo = str(request.query_string)
-    return foo
-
+    return render_template('index.html')
