@@ -60,11 +60,12 @@ def index():
             return render_template('index.html')
 
         query = f"SELECT * FROM Fruit WHERE name LIKE '%{input}%'"
-        results = session.execute(text(query))
-
+        try:
+            results = session.execute(text(query))
+        except Exception as e:
+            print(e)
+            return render_template('index.html',error="Server error")
+        print(results)
         return render_template('index.html', data=results)
 
     return render_template('index.html')
-
-
-

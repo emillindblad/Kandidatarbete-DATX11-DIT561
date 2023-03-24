@@ -53,22 +53,24 @@
                 <div class="data-container">
                     {% if data %}
                     <h1>Results</h1>
-                    <table>
-                        <tr>
-                            <th>Fruit</th>
-                            <th>Price</th>
-                            <th>Current stock</th>
-                        </tr>
-                        {% for i in data %}
+                        <table>
                             <tr>
-                                <td>{{i.name}}</td>
-                                <td>{{i.price}}</td>
-                                <td>{{i.stock}}</td>
+                                <th>Fruit</th>
+                                <th>Price</th>
+                                <th>Current stock</th>
                             </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-                {% endif %}
+                            {% for i in data %}
+                                <tr>
+                                    <td>{{i.name}}</td>
+                                    <td>{{i.price}}</td>
+                                    <td>{{i.stock}}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <h2 style="font-family: monospace;">{{error}}</h2>
+                    </div>
+                    {% endif %}
             </div>
         </main>
     </body>
