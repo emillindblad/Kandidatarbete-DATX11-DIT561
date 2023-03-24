@@ -59,7 +59,7 @@ def index():
         if input == '':
             return render_template('index.html')
 
-        query = f"SELECT * FROM Fruit WHERE name LIKE '%{input}%'"
+        query = f"SELECT name,price,stock FROM Fruit WHERE name LIKE '%{input}%'"
         try:
             results = session.execute(text(query))
         except Exception as e:
