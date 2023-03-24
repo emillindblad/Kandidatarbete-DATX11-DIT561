@@ -1,6 +1,6 @@
-### Starta webbservern
+## Getting started
 
-1. Öppna en terminal och navigera till mappen `flask-project`
+1. Öppna en terminal och navigera till mappen `Challenges`
 
 2. Skapa ett "virtual environment" (om du inte har mappen venv)
 
@@ -16,9 +16,9 @@
 
     Ditt environment är aktiverat om du ser `(venv)` längst ner till vänster i terminalen.
 
-4. Installera flask
+4. Installera flask och alla dependencies
 
-    `pip install flask`
+    `pip install -r requirements.txt`
 
 <!--
 4. Kör följande kommandon för att "berätta" vart flask ska köras och sätta lösenordet för databasen
@@ -44,8 +44,8 @@
     set DB_PASSWORD = *Ditt Lösenord*
     ```
 -->
-5. Starta flask genom att köra `flask run` i terminalen
+5. Navigera till en *challange* tex `sql-injection`
 
-6. För att se sidan, öppna http://localhost:5000 i en webbläsare
+6. Starta flask genom att köra `flask run` i terminalen
 
-
+7. För att se sidan, öppna http://localhost:5000 i en webbläsare
