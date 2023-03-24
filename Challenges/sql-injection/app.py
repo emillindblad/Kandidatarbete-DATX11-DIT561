@@ -15,9 +15,8 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50),unique=True, nullable=False)
-    firstname = db.Column(db.String(50), nullable=False)
-    lastname = db.Column(db.String(50), nullable=False)
-    bio = db.Column(db.Text)
+    password = db.Column(db.String(50),nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True),server_default=func.now())
 
     def __repr__(self) -> str:
@@ -36,8 +35,8 @@ with app.app_context():
     db.drop_all()
     db.create_all()
     session = db.session()
-    new_user = User(email='test@test.com', firstname='Foo',lastname='Bar',bio='A test user')
-    new_user2 = User(email='foo@test.com', firstname='Emil',lastname='Lindblad',bio='Lmao')
+    new_user = User(email='test@test.com', password='Password', name='Foo')
+    new_user2 = User(email='coolmail@example.com', password='flag_{r4vCUVvo0B}', name='Anna Andersson')
     session.add(new_user)
     session.add(new_user2)
 
@@ -57,9 +56,15 @@ with app.app_context():
 def index():
     if request.method == 'POST':
         input = request.form['search']
-        print(input)
+        if input == '':
+            return render_template('index.html')
+
         query = f"SELECT * FROM Fruit WHERE name LIKE '%{input}%'"
         results = session.execute(text(query))
+
         return render_template('index.html', data=results)
 
     return render_template('index.html')
+
+
+
