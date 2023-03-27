@@ -2,10 +2,10 @@
 # other tools to install and deploy your challenge.
 
 # Required sections
-name: "hey"
-author: "author"
-category: category
-description: This is a sample description
+name: "SQL-injection: Fruits"
+author: "Emil Lindblad"
+category: SQL-injection
+description: SQL-injection challenge
 value: 100
 type: standard
 
@@ -111,7 +111,7 @@ requirements:
 # The state of the challenge.
 # If the field is omitted, the challenge is visible by default.
 # If provided, the field can take one of two values: hidden, visible.
-state: hidden
+state: visible
 
 # Specifies what version of the challenge specification was used.
 # Subject to change until ctfcli v1.0.0
