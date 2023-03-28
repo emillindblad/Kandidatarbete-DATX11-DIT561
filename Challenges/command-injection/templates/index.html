@@ -53,7 +53,7 @@
                 <div class="data-container">
                     {% if data %}
                     <h1>Results</h1>
-                    <p>{{data}}</p>
+                    {{ data|safe }}
                     {% else %}
                         <h2 style="font-family: monospace;">{{error}}</h2>
                     </div>
