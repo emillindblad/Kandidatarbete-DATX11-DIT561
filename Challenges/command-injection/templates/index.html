@@ -52,10 +52,10 @@
                 </div>
                 <div class="data-container">
                     {% if data %}
-                    <h1>Results</h1>
+                    <h1>Manpage</h1>
                     {{ data|safe }}
                     {% else %}
-                        <h2 style="font-family: monospace;">{{error}}</h2>
+                        <h2 style="font-family: monospace;">{{ error }}</h2>
                     </div>
                     {% endif %}
             </div>
