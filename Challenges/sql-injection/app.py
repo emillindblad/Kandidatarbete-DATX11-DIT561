@@ -65,7 +65,11 @@ def index():
         except Exception as e:
             print(e)
             return render_template('index.html',error="Server error")
-        print(results)
-        return render_template('index.html', data=results)
+        rows = results.fetchall()
+        if not rows:
+            error = f"There are no products named {input}"
+            return render_template('index.html',error=error)
+
+        return render_template('index.html', data=rows)
 
     return render_template('index.html')
