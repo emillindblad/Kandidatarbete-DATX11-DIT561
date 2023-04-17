@@ -4,6 +4,8 @@ from random import randint
 
 from sqlalchemy.sql import func, text
 
+flag='flag_{r4vCUVvo0B}'
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///database.db'
@@ -36,7 +38,7 @@ with app.app_context():
     db.create_all()
     session = db.session()
     new_user = User(email='test@test.com', password='Password', name='Foo')
-    new_user2 = User(email='coolmail@example.com', password='flag_{r4vCUVvo0B}', name='Anna Andersson')
+    new_user2 = User(email='coolmail@example.com', password=flag, name='Anna Andersson')
     session.add(new_user)
     session.add(new_user2)
 
@@ -65,7 +67,11 @@ def index():
         except Exception as e:
             print(e)
             return render_template('index.html',error="Server error")
-        print(results)
-        return render_template('index.html', data=results)
+        rows = results.fetchall()
+        if not rows:
+            error = f"There are no products named {input}"
+            return render_template('index.html',error=error)
+
+        return render_template('index.html', data=rows)
 
     return render_template('index.html')
