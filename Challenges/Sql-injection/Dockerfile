@@ -1,17 +1,14 @@
-FROM python:3.7-slim-buster
-RUN adduser \
-    --disabled-login \
-    -u 1001 \
-    --gecos "" \
-    --shell /bin/bash \
-    app
-WORKDIR /opt/app
-RUN mkdir -p /opt/app
+FROM python:3.8-slim
 
-COPY src/ /opt/app/
-RUN pip install -r requirements.txt
-RUN chown -R 1001:1001 /opt/app && chmod -R 755 /opt/app
+WORKDIR /app
+COPY /src /app
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-USER 1001
-EXPOSE 8001
-ENTRYPOINT ["/opt/app/serve.sh"]
+EXPOSE 5000
+
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+
+
+CMD ["flask", "run"]
+
