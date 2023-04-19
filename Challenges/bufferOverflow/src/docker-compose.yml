@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  ubuntu-ssh-container:
+    build: .
+    image: ubuntu-ssh
+    ports:
+      - "2222:22"
+    restart: always
+version: '3'
+services:
+  myapp:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "2222:22"
