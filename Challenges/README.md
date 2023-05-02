@@ -1,5 +1,6 @@
 ## Getting started
 
+
 1. Öppna en terminal och navigera till mappen `Challenges`
 
 2. Skapa ett "virtual environment" (om du inte har mappen venv)
