@@ -12,6 +12,6 @@ services:
   myapp:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     ports:
       - "9001:22"

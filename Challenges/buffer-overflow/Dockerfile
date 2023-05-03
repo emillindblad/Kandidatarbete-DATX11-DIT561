@@ -13,10 +13,12 @@ RUN useradd -m -s /bin/bash myuser && \
     echo 'myuser:password' | chpasswd
 
 RUN mkdir /home/myuser/app
-COPY a.out /home/myuser/app/a.out
-COPY bufferOverflow.c /home/myuser/app/bufferOverflow.c
-copy flag.txt /home/myuser/app/flag.txt
+COPY src/a.out /home/myuser/app/a.out
+COPY src/bufferOverflow.c /home/myuser/app/bufferOverflow.c
+copy src/flag.txt /home/myuser/app/flag.txt
+copy src/password.txt /home/myuser/app/password.txt
 RUN chmod 400 /home/myuser/app/flag.txt
+RUN chmod 400 /home/myuser/app/password.txt
 
 RUN chown root:root /home/myuser/app/a.out && \
     chmod 4755 /home/myuser/app/a.out 
