@@ -57,7 +57,7 @@ app = Flask(__name__)
     # session.bulk_save_objects(fruits)
     # session.commit()
 
-docker = docker.from_env()
+client = docker.from_env()
 
 @app.route("/", methods=('GET','POST'))
 def index():
@@ -67,7 +67,17 @@ def index():
 def container_start():
 
     dockerfile_path = "../../Challenges/sql-injection"
+    image, log_generator = client.images.build(path=dockerfile_path, tag="sqli-challenge", rm=True)
+    print(image.id)
 
+    container = client.containers.run(image.id, ports={5000:8001}, detach=True)
+    container_id = container.id
+
+    print(container_id)
+
+    return render_template('index.html')
+    container = client.containers.run(image.id, detach=True)
+
+    print(container.id)
 
     print("Hello")
-    return render_template('index.html')
