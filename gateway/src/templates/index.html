@@ -8,7 +8,7 @@
             background-color: #171717;
             margin: 0;
             color: white;
-            font-family: san serif;
+            font-family: Sans-serif;
         }
         main {
             display: flex;
@@ -44,6 +44,7 @@
         }
         </style>
     </head>
+
     <body>
         <main>
             <div class="wrapper">
@@ -54,27 +55,10 @@
                 <form style="display:flex; gap: 10px;" method="post" action="/container_start">
                     <input type="submit" value="Start container">
                 </form>
+                {{ status["on"] }}
                 <div class="data-container">
-                    {% if data %}
-                    <h1>Results</h1>
-                    <table>
-                        <tr>
-                            <th>Fruit</th>
-                            <th>Price</th>
-                            <th>Current stock</th>
-                        </tr>
-                        {% for i in data %}
-                        <tr>
-                            <td>{{i.name}}</td>
-                            <td>{{i.price}}</td>
-                            <td>{{i.stock}}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    {% else %}
-                    <h2 style="font-family: monospace;">{{error}}</h2>
+
                 </div>
-                {% endif %}
             </div>
         </main>
     </body>

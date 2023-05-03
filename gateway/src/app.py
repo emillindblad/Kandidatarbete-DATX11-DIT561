@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, g, request
 
 import docker
 # from flask_sqlalchemy import SQLAlchemy
 # from random import randint
 
 # from sqlalchemy.sql import func, text
-
-flag='flag_{r4vCUVvo0B}'
 
 app = Flask(__name__)
 
@@ -26,15 +24,6 @@ app = Flask(__name__)
 
     # def __repr__(self) -> str:
         # return f'<User {self.firstname}>'
-
-# class Fruit(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    # name = db.Column(db.String(50), nullable=False)
-    # price = db.Column(db.Integer, nullable=False)
-    # stock = db.Column(db.Integer, nullable=False)
-
-    # def __repr__(self) -> str:
-        # return f'<Product {self.name}>'
 
 # with app.app_context():
     # db.drop_all()
@@ -59,25 +48,46 @@ app = Flask(__name__)
 
 client = docker.from_env()
 
+status = {
+    "msg" : "",
+    "on" : False,
+}
+
+def check_container_status(container_name):
+    print("yo")
+    try:
+        container = client.containers.get(container_name)
+        if container.id:
+            print("hello")
+    except (docker.errors.NotFound, docker.errors.APIError) as e:
+        print(F"nope Error: {e}")
+
 @app.route("/", methods=('GET','POST'))
 def index():
-    return render_template('index.html')
+    temp_name="sqli-challenge"
+    check_container_status(temp_name)
+    print(status)
+    return render_template('index.html',status=status)
 
 @app.route("/container_start", methods=['POST'])
 def container_start():
+    #TODO: probably refactor the container mangement to a different file when using more containers
 
     dockerfile_path = "../../Challenges/sql-injection"
-    image, log_generator = client.images.build(path=dockerfile_path, tag="sqli-challenge", rm=True)
+    image, log_generator = client.images.build(path=dockerfile_path, tag=temp_name, rm=True)
     print(image.id)
 
     container = client.containers.run(image.id, ports={5000:8001}, detach=True)
+    #TODO: catch error if port is busy
+
     container_id = container.id
+    status["msg"] = f"Container started with id {container_id}"
+    status["on"] = True
+    print(status)
 
-    print(container_id)
+    return render_template('index.html',status=status)
 
-    return render_template('index.html')
-    container = client.containers.run(image.id, detach=True)
 
-    print(container.id)
 
-    print("Hello")
+
+
