@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
-from random import randint
 
-from sqlalchemy.sql import func, text
+import docker
+# from flask_sqlalchemy import SQLAlchemy
+# from random import randint
+
+# from sqlalchemy.sql import func, text
 
 flag='flag_{r4vCUVvo0B}'
 
@@ -55,11 +57,17 @@ app = Flask(__name__)
     # session.bulk_save_objects(fruits)
     # session.commit()
 
+docker = docker.from_env()
+
 @app.route("/", methods=('GET','POST'))
 def index():
     return render_template('index.html')
 
 @app.route("/container_start", methods=['POST'])
 def container_start():
+
+    dockerfile_path = "../../Challenges/sql-injection"
+
+
     print("Hello")
     return render_template('index.html')
