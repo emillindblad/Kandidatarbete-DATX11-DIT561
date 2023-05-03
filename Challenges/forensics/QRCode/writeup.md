@@ -4,7 +4,7 @@
 
 ## Solving the challenge
 
-To solve the challenge no programming script is needed and instead can be manually solved using different programs or Unix commands.
+To solve the challenge no programming script is needed and instead it can be manually solved using different programs or Unix commands.
 
 ### Initial observations
 Upon first glance the challenge consists of a seriers of QR code frames appearing one after the other. The first step is to find a way to extract the different frames to then assemble into whole QR codes.
