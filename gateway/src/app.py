@@ -1,4 +1,5 @@
-from flask import Flask, render_template, g, request
+from flask import Flask, render_template, g, request, url_for, redirect
+import container_manager
 
 import docker
 # from flask_sqlalchemy import SQLAlchemy
@@ -48,54 +49,35 @@ app = Flask(__name__)
 
 client = docker.from_env()
 
+temp_name="sqli-challenge"
+
 status = {
     "msg" : "",
     "on" : False,
 }
 
-def check_container_status(container_name):
-    try:
-        client.containers.get(container_name)
-        print("Container started")
-        status["on"] = True
-    except (docker.errors.NotFound, docker.errors.APIError) as e:
-        print(f"Error when starting container {container_name}")
-        print(f"Error: {e}")
-
 @app.route("/", methods=('GET','POST'))
 def index():
-    temp_name="sqli-challenge"
-    check_container_status(temp_name)
-    print(status)
-    return render_template('index.html',status=status)
+    data = {}
+    res = container_manager.check_status(temp_name)
+    if res["on"]:
+        data["on"] = res["on"]
+    print("@@@check@@@")
+    print(res)
+    return render_template('index.html',status=data)
 
 @app.route("/container_start", methods=['POST'])
-def container_start():
-    temp_name="sqli-challenge"
-    #TODO: probably refactor the container mangement to a different file when using more containers
+def start():
+    res = container_manager.start()
+    print("@@@start@@@")
+    print(res)
 
-    dockerfile_path = "../../Challenges/sql-injection"
-    image, log_generator = client.images.build(path=dockerfile_path, tag=f"{temp_name}:latest", rm=True)
-    print(image.id)
-
-    container = client.containers.run(image.id, ports={5000:8001}, name=temp_name, detach=True)
-    #TODO: catch error if port is busy
-
-    container_id = container.id
-    status["msg"] = f"Container started with id {container_id}"
-    status["on"] = True
-    print(status)
-
-    return render_template('index.html',status=status)
+    return redirect(url_for('index'))
 
 @app.route("/container_stop", methods=['POST'])
 def container_stop():
+    res = container_manager.stop()
+    print("@@@stop@@@")
+    print(res)
 
-
-    return render_template('index.html',status=status)
-
-
-
-
-
-
+    return redirect(url_for('index'))

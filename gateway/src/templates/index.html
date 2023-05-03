@@ -52,9 +52,15 @@
                     <h1>Gateway</h1>
                     <h3>Current user</h3>
                 </div>
+                {% if status["on"] == True %}
+                <form style="display:flex; gap: 10px;" method="post" action="/container_stop">
+                    <input type="submit" value="Terminate">
+                </form>
+                {% else %}
                 <form style="display:flex; gap: 10px;" method="post" action="/container_start">
                     <input type="submit" value="Start container">
                 </form>
+                {% endif %}
                 {{ status["on"] }}
                 <div class="data-container">
 
