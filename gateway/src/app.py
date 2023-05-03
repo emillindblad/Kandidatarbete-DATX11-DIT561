@@ -54,13 +54,13 @@ status = {
 }
 
 def check_container_status(container_name):
-    print("yo")
     try:
-        container = client.containers.get(container_name)
-        if container.id:
-            print("hello")
+        client.containers.get(container_name)
+        print("Container started")
+        status["on"] = True
     except (docker.errors.NotFound, docker.errors.APIError) as e:
-        print(F"nope Error: {e}")
+        print(f"Error when starting container {container_name}")
+        print(f"Error: {e}")
 
 @app.route("/", methods=('GET','POST'))
 def index():
@@ -71,13 +71,14 @@ def index():
 
 @app.route("/container_start", methods=['POST'])
 def container_start():
+    temp_name="sqli-challenge"
     #TODO: probably refactor the container mangement to a different file when using more containers
 
     dockerfile_path = "../../Challenges/sql-injection"
-    image, log_generator = client.images.build(path=dockerfile_path, tag=temp_name, rm=True)
+    image, log_generator = client.images.build(path=dockerfile_path, tag=f"{temp_name}:latest", rm=True)
     print(image.id)
 
-    container = client.containers.run(image.id, ports={5000:8001}, detach=True)
+    container = client.containers.run(image.id, ports={5000:8001}, name=temp_name, detach=True)
     #TODO: catch error if port is busy
 
     container_id = container.id
@@ -86,6 +87,13 @@ def container_start():
     print(status)
 
     return render_template('index.html',status=status)
+
+@app.route("/container_stop", methods=['POST'])
+def container_stop():
+
+
+    return render_template('index.html',status=status)
+
 
 
 
