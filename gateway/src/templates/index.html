@@ -24,12 +24,12 @@
         div.data-container {
             padding: 1em;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            flex-direction: column;
         }
-        div.data {
+        div.connection {
             display: flex;
+            align-items: center;
         }
         div.searchbox {
             display: flex;
@@ -52,18 +52,22 @@
                     <h1>Gateway</h1>
                     <h3>Current user</h3>
                 </div>
+                <div class="data-container">
+                <h3>SQL-Injection</h3>
+                <p> {{ challenge_id }} </p>
                 {% if status["on"] == True %}
-                <form style="display:flex; gap: 10px;" method="post" action="/container_stop">
+
+                <form method="POST" action="{{ challenge_id }}/container_stop">
                     <input type="submit" value="Terminate">
                 </form>
                 {% else %}
-                <form style="display:flex; gap: 10px;" method="post" action="/container_start">
+                <form method="POST" action="{{ challenge_id }}/container_start">
                     <input type="submit" value="Start container">
                 </form>
                 {% endif %}
-                {{ status["on"] }}
-                <div class="data-container">
-
+                </div>
+                <div class="connection">
+                    <p> {{ status["on"] }} </p>
                 </div>
             </div>
         </main>

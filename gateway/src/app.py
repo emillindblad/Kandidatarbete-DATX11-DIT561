@@ -56,28 +56,29 @@ status = {
     "on" : False,
 }
 
-@app.route("/", methods=('GET','POST'))
-def index():
+@app.route("/<int:challenge_id>")
+def index(challenge_id):
+    print(challenge_id)
     data = {}
     res = container_manager.check_status(temp_name)
     if res["on"]:
         data["on"] = res["on"]
     print("@@@check@@@")
     print(res)
-    return render_template('index.html',status=data)
+    return render_template('index.html', challenge_id=challenge_id, status=data)
 
-@app.route("/container_start", methods=['POST'])
-def start():
+@app.route("/<int:challenge_id>/container_start", methods=['POST'])
+def start(challenge_id):
     res = container_manager.start()
     print("@@@start@@@")
     print(res)
 
-    return redirect(url_for('index'))
+    return redirect(url_for('index', challenge_id=challenge_id))
 
-@app.route("/container_stop", methods=['POST'])
-def container_stop():
+@app.route("/<int:challenge_id>/container_stop", methods=['POST'])
+def container_stop(challenge_id):
     res = container_manager.stop()
     print("@@@stop@@@")
     print(res)
 
-    return redirect(url_for('index'))
+    return redirect(url_for('index', challenge_id=challenge_id))
