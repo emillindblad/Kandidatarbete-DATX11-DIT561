@@ -1,15 +1,19 @@
+from os import close
 import docker, docker.errors
 import random
+import json
 
 
 client = docker.from_env()
 temp_name="sqli-challenge"
 
-# def start(image, container_name): no arguments for now
-def start():
+def start(challenge_id):
+# def start():
     #TODO: probably refactor the container mangement to a different file when using more containers
 
-    dockerfile_path = "../../Challenges/sql-injection"
+
+    data = get_info(challenge_id)
+    dockerfile_path = f"../../{data['path']}"
     image, log_generator = client.images.build(path=dockerfile_path, tag=f"{temp_name}:latest", rm=True)
     print(image.id)
     port = random.randint(8001,8030)
@@ -63,4 +67,11 @@ def check_status(container_name):
         out["on"] = False
         out["error"] = e
     return out
+
+def get_info(challenge_id):
+    key = str(challenge_id)
+    with open('challenge_mappings.json', 'r') as f:
+        data=json.load(f)
+    return data[key]
+
 

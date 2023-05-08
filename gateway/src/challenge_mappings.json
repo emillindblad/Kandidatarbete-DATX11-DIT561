@@ -1,0 +1,14 @@
+{
+    "13" : {
+        "name" : "SQL-injection: Fruits",
+        "path" : "Challenges/sql-injection"
+    },
+    "21" : {
+        "name" : "Buffer Overflow",
+        "path" : "Challenges/buffer-overflow"
+    },
+    "28" : {
+        "name" : "Command-injection",
+        "path" : "Challenges/command-injection"
+    }
+}
