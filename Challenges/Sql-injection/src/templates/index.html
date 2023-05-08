@@ -39,7 +39,7 @@
             border-collapse: collapse;
         }
         .shopName {
-            margin-right: 36vw;
+            margin-right: 30vw;
             margin-left: 4vw;
             margin-bottom: 3vh;
         }
@@ -99,6 +99,11 @@
             width: 200px;
             height: 250px;
         }
+        .cart {
+            height: 30px;
+            width: 30px;
+            margin-left: 30px;
+        }
         </style>
     </head>
     <body>
@@ -113,6 +118,7 @@
                         <input class="searchBar" name="search">
                         <input class="searchBtn" type="submit" value="Search">
                     </form>
+                    <img class="cart" src="{{url_for('static', filename='images/cart.png')}}">
                 </div>
                 <div class="content">
                     <ul class="categories">
@@ -133,13 +139,13 @@
                         <img class="product" src="{{url_for('static', filename='images/apple.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/banana.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/cherries.jpg')}}">
-                        <img class="product" src="{{url_for('static', filename='images/dragonfruit.jpg')}}">
-                        <img class="product" src="{{url_for('static', filename='images/grapes.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/grapefruit.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/kiwi.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/mango.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/orange.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/pear.jpg')}}">
                         <img class="product" src="{{url_for('static', filename='images/pineapple.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/watermelon.jpg')}}">
                     </div>
                 </div>
                 <div class="data-container">
