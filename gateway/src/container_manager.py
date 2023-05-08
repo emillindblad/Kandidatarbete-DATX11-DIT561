@@ -14,15 +14,15 @@ def start(challenge_id):
 
     data = get_info(challenge_id)
     dockerfile_path = f"../../{data['path']}"
-    image, log_generator = client.images.build(path=dockerfile_path, tag=f"{temp_name}:latest", rm=True)
+    image, log_generator = client.images.build(path=dockerfile_path, rm=True)
     print(image.id)
     port = random.randint(8001,8030)
 
     try:
-        container = client.containers.run(image.id, ports={5000:port}, name=temp_name, detach=True)
+        container = client.containers.run(image.id, ports={5000:port}, name=data["container_name"], detach=True)
 
         return {
-            "msg" : f"Container started with id {container.short_id}",
+            "msg" : f"Container {container.name} started with id {container.short_id}",
             "port" : port,
             "on" : True
         }
@@ -36,10 +36,10 @@ def start(challenge_id):
         }
 
 
-# def stop(container_name):
-def stop():
+def stop(challenge_id):
+    data = get_info(challenge_id)
     try:
-        container = client.containers.get(temp_name)
+        container = client.containers.get(data["container_name"])
         container.stop()
         container.remove()
         return {
@@ -54,6 +54,7 @@ def stop():
         }
 
 def check_status(container_name):
+    print(container_name)
     out = {}
     try:
         c = client.containers.get(container_name)

@@ -1,14 +1,17 @@
 {
     "13" : {
         "name" : "SQL-injection: Fruits",
+        "container_name" : "sql-injection",
         "path" : "Challenges/sql-injection"
     },
     "21" : {
         "name" : "Buffer Overflow",
+        "container_name" : "buffer-overflow",
         "path" : "Challenges/buffer-overflow"
     },
     "28" : {
         "name" : "Command-injection",
+        "container_name" : "command-injection",
         "path" : "Challenges/command-injection"
     }
 }
