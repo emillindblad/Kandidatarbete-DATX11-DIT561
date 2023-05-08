@@ -2,10 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>FlaskApp</title>
+        <title>Fruit Shop</title>
         <style>
         body {
-            margin: 0
+            margin: 0;
+            overflow-x: hidden;
         }
         main {
             display: flex;
@@ -13,7 +14,7 @@
             height: 100vh;
         }
         .wrapper {
-            width: 60vw;
+            width: 100vw;
         }
         div.data-container {
             padding: 1em;
@@ -27,7 +28,7 @@
         }
         div.searchbox {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
         }
         table,th,td {
@@ -37,18 +38,115 @@
         table {
             border-collapse: collapse;
         }
+        .shopName {
+            margin-right: 30vw;
+            margin-left: 4vw;
+            margin-bottom: 3vh;
+        }
+        .content {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: fit-content;
+            column-gap: 5px;
+        }
+        .categories {
+            background-color: rgb(178, 227, 176);
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 19vw;
+        }
+        .products {
+            display: flex;
+            width: 80vw;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 5px 5px;
+        }
+        li a {
+            display: block;
+            color: #000;
+            padding: 9px 16px;
+            text-decoration: none;
+            font-size: larger;
+            border-top: 1px solid rgb(143, 207, 141);
+            border-bottom: 1px solid rgb(143, 207, 141);
+        }
+        li a:hover {
+            background-color: #4f9243b5;
+            color: white;
+        }
+        .catHeader {
+            font-size: x-large; 
+            padding-left: 65px; 
+            font-weight: bold;
+            padding-top: 1.5vh;
+            padding-bottom: 1.5vh;
+        }
+        .searchBar {
+            width: 400px; 
+            height: 20px;
+        }
+        .searchBtn {
+            background-color: rgb(143, 207, 141);
+        }
+        .searchBtn:hover {
+            background-color: rgba(143, 207, 141, 0.573);
+            cursor: pointer;
+        }
+        .product {
+            width: 200px;
+            height: 250px;
+        }
+        .cart {
+            height: 30px;
+            width: 30px;
+            margin-left: 30px;
+        }
         </style>
     </head>
     <body>
         <main>
             <div class="wrapper">
                 <div class="searchbox">
-                    <h1>Fruit shop</h1>
-                    <h3>Product search</h3>
+                    <a style="text-decoration: none; color: black" href="{{url_for('index')}}">
+                        <h1 class="shopName">Fruit shop</h1>
+                    </a>
+                    <h3 style="margin-right: 10px">Product search </h3>
                     <form style="display:flex; gap: 10px;" method="post">
-                        <input style="width: 400px;" type="text" name="search">
-                        <input type="submit" value="Search">
+                        <input class="searchBar" name="search">
+                        <input class="searchBtn" type="submit" value="Search">
                     </form>
+                    <img class="cart" src="{{url_for('static', filename='images/cart.png')}}">
+                </div>
+                <div class="content">
+                    <ul class="categories">
+                        <li class="catHeader">Categories</li>
+                        <li><a href="{{url_for('index')}}">Apples</a></li>
+                        <li><a href="{{url_for('index')}}">Pears</a></li>
+                        <li><a href="{{url_for('index')}}">Bananas</a></li>
+                        <li><a href="{{url_for('index')}}">Green Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Red Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Yellow Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Orange Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Exotic Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Citrus Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Organic Fruits</a></li>
+                        <li><a href="{{url_for('index')}}">Other Fruits</a></li>
+                        </ul>
+                    <div class="products">
+                        <img class="product" src="{{url_for('static', filename='images/apple.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/banana.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/cherries.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/grapefruit.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/kiwi.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/mango.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/orange.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/pear.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/pineapple.jpg')}}">
+                        <img class="product" src="{{url_for('static', filename='images/watermelon.jpg')}}">
+                    </div>
                 </div>
                 <div class="data-container">
                     {% if data %}
