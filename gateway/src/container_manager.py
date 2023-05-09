@@ -1,4 +1,5 @@
 from os import close
+import pprint
 import docker, docker.errors
 import random
 import json
@@ -58,11 +59,15 @@ def check_status(container_name):
     out = {}
     try:
         c = client.containers.get(container_name)
+
         print(c.status)
         out["on"] = False
         if c.status == "running":
             print("Container running")
             out["on"] = True
+            data = client.api.containers(filters={"id" : c.short_id})
+            out["port"] = data[0]["Ports"][0]["PublicPort"]
+
     except (docker.errors.NotFound, docker.errors.APIError) as e:
         print(f"Error: {e}")
         out["on"] = False

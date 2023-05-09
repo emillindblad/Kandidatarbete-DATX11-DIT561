@@ -2,16 +2,19 @@
     "13" : {
         "name" : "SQL-injection: Fruits",
         "container_name" : "sql-injection",
-        "path" : "Challenges/sql-injection"
+        "path" : "Challenges/sql-injection",
+        "connection_type" : "web"
     },
     "21" : {
         "name" : "Buffer Overflow",
         "container_name" : "buffer-overflow",
-        "path" : "Challenges/buffer-overflow"
+        "path" : "Challenges/buffer-overflow",
+        "connection_type" : "ssh"
     },
     "28" : {
         "name" : "Command-injection",
         "container_name" : "command-injection",
-        "path" : "Challenges/command-injection"
+        "path" : "Challenges/command-injection",
+        "connection_type" : "web"
     }
 }
