@@ -7,7 +7,7 @@
     "21" : {
         "name" : "Buffer Overflow",
         "container_name" : "buffer-overflow",
-        "path" : "Challenges/buffer-overflow"
+        "image-id" : "buffer-overflow:latest"
     },
     "28" : {
         "name" : "Command-injection",
