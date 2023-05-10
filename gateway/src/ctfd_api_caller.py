@@ -41,7 +41,8 @@ def add_challenge_flag(challenge_id,flag):
     print(r.content)
     response_json = json.loads(r.content)
     flag_id = response_json['data']['id']
-    print(flag_id)
+
+    return flag_id
 
     # data = r.json()
 
@@ -80,6 +81,6 @@ def challenge_attempt(challenge_id, attempt):
 
 # get_challenge_flag(13)
 # delete_challenge_flag(37)
-add_challenge_flag(13,"flag_from_api")
+# add_challenge_flag(13,"flag_from_api")
 # challenge_attempt(28, "Just_a_test_submission")
 

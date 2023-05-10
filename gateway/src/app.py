@@ -8,11 +8,12 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 @app.route("/<int:challenge_id>")
 def index(challenge_id):
     if 'user_id' not in session:
-        session['user_id']=secrets.token_hex(4)
+        session['user_id'] = secrets.token_hex(4)
         print(session['user_id'])
 
     info = container_manager.get_info(challenge_id)
-    data = container_manager.check_status(info["container_name"])
+    container_name = f"{session['user_id']}-{info['container_name']}"
+    data = container_manager.check_status(container_name)
     base_url="ctfortress.ddns.net"
     print(data)
 
@@ -20,15 +21,15 @@ def index(challenge_id):
 
 @app.route("/<int:challenge_id>/container_start", methods=['POST'])
 def start(challenge_id):
-    res = container_manager.start(challenge_id)
+    res = container_manager.start(challenge_id, session['user_id'])
     print("@@@start@@@")
-    print(res)
+    session['flag_id'] = res['flag_id']
 
     return redirect(url_for('index', challenge_id=challenge_id))
 
 @app.route("/<int:challenge_id>/container_stop", methods=['POST'])
 def container_stop(challenge_id):
-    res = container_manager.stop(challenge_id)
+    res = container_manager.stop(challenge_id, session['user_id'], session['flag_id'])
     print("@@@stop@@@")
     print(res)
 

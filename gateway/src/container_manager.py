@@ -1,32 +1,33 @@
 from os import close
-import pprint
 import docker, docker.errors
 import random
 import json
 from flag_generator import generate_flag
-from api_testing import add_challenge_flag 
-import uuid
+from ctfd_api_caller import add_challenge_flag, delete_challenge_flag
 
 client = docker.from_env()
 temp_name="sqli-challenge"
 
-def start(challenge_id):
-    data = get_info(challenge_id)
+def start(challenge_id, user_id):
+    info = get_info(challenge_id)
     # dockerfile_path = f"../../{data['path']}"
     # image, log_generator = client.images.build(path=dockerfile_path, rm=True)
     # print(image.id)
-    existing_image_id = data['image-id']
-    port = random.randint(8001,8030)
+    existing_image_id = info['image-id']
+    port = random.randint(8200,8400)
 #    unique_id = str(uuid.uuid4())[:8]
 #    container_name = f"{data['container_name']}-{unique_id}"
 
     try:
-        container = client.containers.run(existing_image_id, ports={22:port}, name=data["container_name"], detach=True, environment={'FLAG': generate_flag("1","1","ourPassword")})
-        add_challenge_flag(challenge_id, generate_flag("1","1","ourPassword"))
+        flag = generate_flag(user_id, challenge_id)
+        print(flag)
+        container = client.containers.run(existing_image_id, ports={info["port"]:port}, name=f"{user_id}-{info['container_name']}", detach=True, environment={'FLAG': flag})
+        flag_id = add_challenge_flag(challenge_id, flag)
         return {
             "msg" : f"Container {container.name} started with id {container.short_id}",
             "port" : port,
-            "on" : True
+            "on" : True,
+            "flag_id" : flag_id
         }
 
     except (docker.errors.ContainerError, docker.errors.ImageNotFound,  docker.errors.APIError ) as e:
@@ -38,12 +39,14 @@ def start(challenge_id):
         }
 
 
-def stop(challenge_id):
-    data = get_info(challenge_id)
+def stop(challenge_id, user_id, flag_id):
+    info = get_info(challenge_id)
+    container_name = f"{user_id}-{info['container_name']}"
     try:
-        container = client.containers.get(data["container_name"])
+        container = client.containers.get(container_name)
         container.stop()
         container.remove()
+        delete_challenge_flag(flag_id)
         return {
             "succuess" : True
         }
