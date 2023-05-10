@@ -9,10 +9,11 @@ def index(challenge_id):
     session['foo']='bar'
     print(session)
     info = container_manager.get_info(challenge_id)
-
     data = container_manager.check_status(info["container_name"])
+    base_url="ctfortress.ddns.net"
     print(data)
-    return render_template('index.html', challenge_name=info["name"], challenge_id=challenge_id, data=data)
+
+    return render_template('index.html', challenge_name=info["name"], challenge_id=challenge_id, data=data, base_url=base_url)
 
 @app.route("/<int:challenge_id>/container_start", methods=['POST'])
 def start(challenge_id):
