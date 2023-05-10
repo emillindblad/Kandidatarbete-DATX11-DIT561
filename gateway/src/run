@@ -7,5 +7,4 @@ FLASK_SECRET_KEY=$(openssl rand -base64 32)
 export FLASK_SECRET_KEY=$FLASK_SECRET_KEY
 
 # Start the Flask app
-flask run --debug
-
+flask run --host=0.0.0.0 -p 8199
