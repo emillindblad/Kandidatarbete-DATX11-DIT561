@@ -1,10 +1,13 @@
-from flask import Flask, render_template, g, request, url_for, redirect
-import container_manager
+from flask import Flask, render_template, session, url_for, redirect
+import container_manager, os
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 
 @app.route("/<int:challenge_id>")
 def index(challenge_id):
+    session['foo']='bar'
+    print(session)
     info = container_manager.get_info(challenge_id)
 
     data = container_manager.check_status(info["container_name"])
