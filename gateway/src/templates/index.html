@@ -18,11 +18,10 @@
         }
         .wrapper {
             width: 50vw;
-            padding: 20px;
+            padding: 2rem;
             background-color: #222222;
         }
         div.data-container {
-            padding: 1em;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -30,6 +29,7 @@
         div.connection {
             display: flex;
             align-items: center;
+            justify-content: center;
         }
         div.searchbox {
             display: flex;
@@ -50,26 +50,25 @@
             <div class="wrapper">
                 <div class="searchbox">
                     <h1>Gateway</h1>
-                    <h3>Current user</h3>
+                    <h3>Your user id: {{user_id}}</h3>
                 </div>
                 <div class="data-container">
-                <h3>SQL-Injection</h3>
-                <p> {{ challenge_id }} </p>
-                {% if status["on"] == True %}
-
-                <form method="POST" action="{{ challenge_id }}/container_stop">
-                    <input type="submit" value="Terminate">
-                </form>
-                {% else %}
-                <form method="POST" action="{{ challenge_id }}/container_start">
-                    <input type="submit" value="Start container">
-                </form>
-                {% endif %}
+                    <h3> {{ challenge_name }} </h3>
+                    {% if data["on"] == False %}
+                        <form method="POST" action="{{ challenge_id }}/container_start">
+                            <input type="submit" value="Start container">
+                        </form>
                 </div>
-                <div class="connection">
-                    <p> {{ status["on"] }} </p>
+                    {% else %}
+                        <form method="POST" action="{{ challenge_id }}/container_stop">
+                            <input type="submit" value="Terminate">
+                        </form>
                 </div>
-            </div>
+                        <div class="connection">
+                            <p>Your connection details: <a href="{{base_url}}:{{data['port']}}">{{base_url}}:{{data['port']}}</a> </p>
+                        </div>
+                    {% endif %}
+                </div>
         </main>
     </body>
 </html>

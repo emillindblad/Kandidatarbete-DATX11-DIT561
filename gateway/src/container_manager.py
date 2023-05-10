@@ -1,24 +1,29 @@
+from os import close
+import pprint
 import docker, docker.errors
 import random
+import json
 
 
 client = docker.from_env()
 temp_name="sqli-challenge"
 
-# def start(image, container_name): no arguments for now
-def start():
+def start(challenge_id):
+# def start():
     #TODO: probably refactor the container mangement to a different file when using more containers
 
-    dockerfile_path = "../../Challenges/sql-injection"
-    image, log_generator = client.images.build(path=dockerfile_path, tag=f"{temp_name}:latest", rm=True)
+
+    data = get_info(challenge_id)
+    dockerfile_path = f"../../{data['path']}"
+    image, log_generator = client.images.build(path=dockerfile_path, rm=True)
     print(image.id)
     port = random.randint(8001,8030)
 
     try:
-        container = client.containers.run(image.id, ports={5000:port}, name=temp_name, detach=True)
+        container = client.containers.run(image.id, ports={5000:port}, name=data["container_name"], detach=True)
 
         return {
-            "msg" : f"Container started with id {container.short_id}",
+            "msg" : f"Container {container.name} started with id {container.short_id}",
             "port" : port,
             "on" : True
         }
@@ -32,10 +37,10 @@ def start():
         }
 
 
-# def stop(container_name):
-def stop():
+def stop(challenge_id):
+    data = get_info(challenge_id)
     try:
-        container = client.containers.get(temp_name)
+        container = client.containers.get(data["container_name"])
         container.stop()
         container.remove()
         return {
@@ -50,17 +55,29 @@ def stop():
         }
 
 def check_status(container_name):
+    print(container_name)
     out = {}
     try:
         c = client.containers.get(container_name)
+
         print(c.status)
         out["on"] = False
         if c.status == "running":
             print("Container running")
             out["on"] = True
+            data = client.api.containers(filters={"id" : c.short_id})
+            out["port"] = data[0]["Ports"][0]["PublicPort"]
+
     except (docker.errors.NotFound, docker.errors.APIError) as e:
         print(f"Error: {e}")
         out["on"] = False
         out["error"] = e
     return out
+
+def get_info(challenge_id):
+    key = str(challenge_id)
+    with open('challenge_mappings.json', 'r') as f:
+        data=json.load(f)
+    return data[key]
+
 
