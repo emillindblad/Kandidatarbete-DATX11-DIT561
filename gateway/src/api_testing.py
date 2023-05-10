@@ -1,8 +1,8 @@
 import requests
 import json
 
-host = "localhost"
-admim_token = "adb29e71643d34f2a72715bd5f93214baade20566124beb8467e083df23e80ca"
+host = "ctfortress.ddns.net:8081"
+admim_token = "49c28d54d0c85fffdf73f28648fe304acac179101aba5219232b2cb53c1cdcfb"
 
 def get_challenge_flag(challenge_id):
     url = f"http://{host}/api/v1/challenges/{challenge_id}/flags"
@@ -39,6 +39,9 @@ def add_challenge_flag(challenge_id,flag):
     r = requests.post(url, headers=headers, json=data)
 
     print(r.content)
+    response_json = json.loads(r.content)
+    flag_id = response_json['data']['id']
+    print(flag_id)
 
     # data = r.json()
 
@@ -77,6 +80,6 @@ def challenge_attempt(challenge_id, attempt):
 
 # get_challenge_flag(13)
 # delete_challenge_flag(37)
-# add_challenge_flag(13,"flag_from_api")
+add_challenge_flag(13,"flag_from_api")
 # challenge_attempt(28, "Just_a_test_submission")
 

@@ -3,25 +3,26 @@ import pprint
 import docker, docker.errors
 import random
 import json
-
+from flag_generator import generate_flag
+from api_testing import add_challenge_flag 
+import uuid
 
 client = docker.from_env()
 temp_name="sqli-challenge"
 
 def start(challenge_id):
-# def start():
-    #TODO: probably refactor the container mangement to a different file when using more containers
-
-
     data = get_info(challenge_id)
-    dockerfile_path = f"../../{data['path']}"
-    image, log_generator = client.images.build(path=dockerfile_path, rm=True)
-    print(image.id)
+    # dockerfile_path = f"../../{data['path']}"
+    # image, log_generator = client.images.build(path=dockerfile_path, rm=True)
+    # print(image.id)
+    existing_image_id = data['image-id']
     port = random.randint(8001,8030)
+#    unique_id = str(uuid.uuid4())[:8]
+#    container_name = f"{data['container_name']}-{unique_id}"
 
     try:
-        container = client.containers.run(image.id, ports={5000:port}, name=data["container_name"], detach=True)
-
+        container = client.containers.run(existing_image_id, ports={22:port}, name=data["container_name"], detach=True, environment={'FLAG': generate_flag("1","1","ourPassword")})
+        add_challenge_flag(challenge_id, generate_flag("1","1","ourPassword"))
         return {
             "msg" : f"Container {container.name} started with id {container.short_id}",
             "port" : port,
@@ -79,5 +80,4 @@ def get_info(challenge_id):
     with open('challenge_mappings.json', 'r') as f:
         data=json.load(f)
     return data[key]
-
 

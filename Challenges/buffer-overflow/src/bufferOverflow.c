@@ -14,7 +14,6 @@ int read_password_from_file(char *password, const char *filename, size_t buffer_
     fgets(password, buffer_size, file);
     fclose(file);
 
-    // Remove the newline character if it's present
     size_t len = strlen(password);
     if (len > 0 && password[len - 1] == '\n') {
         password[len - 1] = '\0';
@@ -24,7 +23,7 @@ int read_password_from_file(char *password, const char *filename, size_t buffer_
 }
 
 int main() {
-    setbuf(stdout, NULL); // Add this line to disable output buffering
+    setbuf(stdout, NULL);
     char input[64];
     char flag[64];
     char password[64];
