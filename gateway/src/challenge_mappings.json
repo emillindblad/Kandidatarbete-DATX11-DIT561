@@ -1,0 +1,23 @@
+{
+    "13" : {
+        "name" : "SQL-injection: Fruits",
+        "container_name" : "sql-injection",
+        "image-id" : "sql-injection:latest",
+        "connection_type" : "web",
+        "port" : "5000"
+    },
+    "21" : {
+        "name" : "Buffer Overflow",
+        "container_name" : "buffer-overflow",
+        "image-id" : "buffer-overflow:latest",
+        "connection_type" : "ssh",
+        "port" : "22"
+    },
+    "28" : {
+        "name" : "Command-injection",
+        "container_name" : "command-injection",
+        "image-id" : "command-injection:latest",
+        "connection_type" : "web",
+        "port" : "5000"
+    }
+}

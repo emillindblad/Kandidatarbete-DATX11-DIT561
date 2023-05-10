@@ -2,7 +2,7 @@
 FROM ubuntu:22.04
 
 
-
+ENV FLAG=flag{default_flag}
 # Update the package list and install necessary packages
 RUN apt-get update && \
     apt-get install -y openssh-server && \
@@ -13,10 +13,12 @@ RUN useradd -m -s /bin/bash myuser && \
     echo 'myuser:password' | chpasswd
 
 RUN mkdir /home/myuser/app
-COPY a.out /home/myuser/app/a.out
-COPY bufferOverflow.c /home/myuser/app/bufferOverflow.c
-copy flag.txt /home/myuser/app/flag.txt
+COPY src/a.out /home/myuser/app/a.out
+COPY src/bufferOverflow.c /home/myuser/app/bufferOverflow.c
+copy src/flag.txt /home/myuser/app/flag.txt
+copy src/password.txt /home/myuser/app/password.txt
 RUN chmod 400 /home/myuser/app/flag.txt
+RUN chmod 400 /home/myuser/app/password.txt
 
 RUN chown root:root /home/myuser/app/a.out && \
     chmod 4755 /home/myuser/app/a.out 
@@ -30,8 +32,15 @@ RUN mkdir /var/run/sshd && \
     echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
     sed -i 's/^\(session\s\+required\s\+pam_loginuid.so\)/#\1/' /etc/pam.d/sshd
 
+
+# Create the entrypoint script
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'echo "${FLAG}" > /home/myuser/app/flag.txt' >> /entrypoint.sh && \
+    echo 'exec /usr/sbin/sshd -D' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
 # Expose the SSH port
 EXPOSE 22
 
 # Start the SSH server
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/entrypoint.sh"]

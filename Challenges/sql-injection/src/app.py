@@ -5,7 +5,10 @@ from random import randint
 
 from sqlalchemy.sql import func, text
 
-flag='flag_{r4vCUVvo0B}'
+with open('flag.txt', 'r') as file:
+    flag = file.read()
+
+#flag='flag_{r4vCUVvo0B}'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] =\
