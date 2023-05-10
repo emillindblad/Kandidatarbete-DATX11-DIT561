@@ -2,7 +2,7 @@
     "13" : {
         "name" : "SQL-injection: Fruits",
         "container_name" : "sql-injection",
-        "path" : "Challenges/sql-injection"
+        "image-id" : "sql-injection:latest"
     },
     "21" : {
         "name" : "Buffer Overflow",
