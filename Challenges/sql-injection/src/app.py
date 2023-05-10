@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os
 from flask_sqlalchemy import SQLAlchemy
 from random import randint
 
@@ -58,6 +59,7 @@ with app.app_context():
     session.commit()
 
 @app.route("/", methods=('GET','POST'))
+
 def index():
     if request.method == 'POST':
         input = request.form['search']
