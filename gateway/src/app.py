@@ -14,7 +14,7 @@ def index(challenge_id):
     info = container_manager.get_info(challenge_id)
     container_name = f"{session['user_id']}-{info['container_name']}"
     data = container_manager.check_status(container_name)
-    base_url="ctfortress.ddns.net"
+    base_url="http://ctfortress.ddns.net"
     print(data)
 
     return render_template('index.html', user_id=session['user_id'], challenge_name=info["name"], challenge_id=challenge_id, data=data, base_url=base_url)
